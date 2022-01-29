@@ -1,6 +1,3 @@
-from re import I
-
-
 n = int(input())
 case = [ [] for i in range(n)]
 for i in range(n):
