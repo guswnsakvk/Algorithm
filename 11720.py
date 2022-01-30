@@ -1,7 +1,12 @@
+# for문 사용
 lenght = int(input())
 number = input()
-sum = 0
+total = 0
 for i in range(lenght):
-  sum += int(number[i])
+  total += int(number[i])
 
-print(sum)
+print(total)
+
+# map 사용
+n = input()
+print(sum(list(map(int,input()))))
