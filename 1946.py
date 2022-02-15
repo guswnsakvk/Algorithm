@@ -1,22 +1,21 @@
+import sys
+input = sys.stdin.readline
 t = int(input())
 
 for _ in range(t):
   n = int(input())
   answer = n
-  test = [True for _ in range(n)]
-  case = []
-  for i in range(n):
-    lst = list(map(int, input().split()))
-    case.append(lst)
-  
-  for i in range(n):
-    for j in range(n):
-      if(case[i][0] > case[j][0] and case[i][1] > case[j][1]):
-        test[i] = False
-        break
+  score = [0 for _ in range(n+1)]
 
   for i in range(n):
-    if(not test[i]):
+    a, b = map(int, input().split())
+    score[a] = b
+
+  minNum = score[1]
+  for i in range(2, n+1):
+    if(minNum < score[i]):
       answer -= 1
+    else:
+      minNum = score[i]
 
   print(answer)
