@@ -1,26 +1,18 @@
 def solution(board, moves):
     answer = 0
-    layer = [0] * len(board)
-    stack = []
+    basket = []
     
-    for i in range(len(board)):
-        for j in range(len(board[0])-1,-1,-1):
-            if board[j][i] == 0:
-                break
-            else:
-                layer[i] += 1
-                
     for i in moves:
-        if layer[i-1] != 0:
-            if stack == []:
-                stack.append(board[i-1][(layer[i-1])])
-            else:
-                if board[i-1][(layer[i-1])] == stack[len(stack)-1]:
-                    stack.pop()
-                    answer += 2
-                else:
-                    stack.append(board[i-1][(layer[i-1])])
-        else:
-            continue
-    
+        for j in range(len(board[0])):
+            if board[j][i-1] != 0:
+                basket.append(board[j][i-1])
+                board[j][i-1] = 0
+                break
+                
+        if len(basket) > 1:
+            if basket[-2] == basket[-1]:
+                basket.pop()
+                basket.pop()
+                answer += 2
+                
     return answer
