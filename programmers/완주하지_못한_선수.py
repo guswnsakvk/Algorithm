@@ -1,6 +1,6 @@
 def solution(participant, completion):
-    for goal in completion:
-        if goal in participant:
-            participant.remove(goal)
-    
-    return participant[0]
+    for i in participant:
+        if i in completion:
+            completion.remove(i)
+        else:
+            return i
