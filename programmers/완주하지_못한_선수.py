@@ -1,6 +1,9 @@
-def solution(participant, completion):
-    for i in participant:
-        if i in completion:
-            completion.remove(i)
-        else:
-            return i
+def solution(participant, completion):    
+    participant.sort()
+    completion.sort()
+
+    for i in range(len(completion)):
+        if participant[i] != completion[i]:
+            return participant[i]
+
+    return participant[len(participant) -1]
