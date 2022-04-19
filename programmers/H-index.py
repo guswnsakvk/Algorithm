@@ -1,8 +1,6 @@
 def solution(citations):
-  answer = 0
-  avg = sum(citations) / len(citations)
-  for citation in citations:
-      if citation >= avg:
-          answer += 1
-  
-  return answer
+  citations.sort()
+  if len(citations) % 2 == 0:
+      return citations[(len(citations) // 2) - 1]
+  else:
+      return citations[len(citations) // 2]
