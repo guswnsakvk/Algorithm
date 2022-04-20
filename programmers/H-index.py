@@ -1,6 +1,6 @@
 def solution(citations):
   citations.sort(reverse=True)
-  for i, citation in enumerate(citations, start=1):
+  for i, citation in enumerate(citations):
       if citation <= i:
-          return citation
-  return 0
+          return i
+  return len(citations)
