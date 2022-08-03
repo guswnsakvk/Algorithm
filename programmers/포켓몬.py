@@ -11,3 +11,10 @@ def solution(nums):
     else:
         answer = len(poketmons)
     return answer
+
+def solution(nums):
+    answer = len(nums) // 2
+    poketmons = len(list(set(nums)))
+    answer = answer if answer <= poketmons else poketmons
+
+    return answer
