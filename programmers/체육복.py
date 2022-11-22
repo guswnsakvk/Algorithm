@@ -1,22 +1,15 @@
 def solution(n, lost, reserve):
-    answer = n - len(lost)
-    for i in range(len(lost)):
-        if(lost[i] == 1):
-            if reserve in 2:
-                answer += 1
-                reserve.remove(2)
-                continue
-        if(lost[i] == n):
-            if reserve in (n-1):
-                answer += 1
-                reserve.remove(n-1)
-                continue
-        if lost[i]-1 in reserve:
+    newLost = list(set(lost) - set(reserve))
+    newReserve = list(set(reserve) - set(lost))
+    answer = n - len(newLost)
+    for i in newLost:
+        if i-1 in newReserve:
             answer += 1
-            reserve.remove(lost[i]-1)
+            newReserve.remove(i-1)
             continue
-        if lost[i]+1 in reserve:
+        if i+1 in newReserve:
             answer += 1
-            reserve.remove(lost[i]+1)
+            newReserve.remove(i+1)
             continue
+    
     return answer
