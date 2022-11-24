@@ -1,0 +1,7 @@
+import itertools
+
+def solution(number, k):
+    nums = sorted(list(map("".join, itertools.combinations(number, len(number) - k))))
+    newNums = list(map(int, nums))
+
+    return str(max(newNums))
