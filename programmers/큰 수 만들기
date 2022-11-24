@@ -1,6 +1,13 @@
-import itertools
-
 def solution(number, k):
-    nums = sorted(list(map(int, map("".join, itertools.combinations(number, len(number) - k)))))
+    nums = []
+    
+    for i in number:
+        while k > 0 and nums and nums[-1] < i:
+            nums.pop()
+            k -= 1
+        nums.append(i)
+        
+    if(k>0):
+        nums = nums[:-k]
 
-    return str(nums[-1])
+    return ''.join(nums)
