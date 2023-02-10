@@ -1,38 +1,51 @@
-## 지원자들의 높은 점수대로 정렬하여
-## for문을 돌릴 때 지원자의 점수가 요구하는 점수보다 낮을 경우 break
+import itertools
 
 def solution(info, query):
     answer = []
-    volunteers = []
-    
+    applicants = {}
+
+    ## 지원자들 스팩에 해당하는 모든 경우의 수 만들기
+    ## 개발언어, 직군, 경력, 소울푸드 총 2**4 개의 가지
+    ## 개발언어, 직군, 경력, 소울푸드 : 지원자 점수 <- 형태로 만들어서 저장
     for i in info:
-        lst = tuple(i.split())
-        volunteers.append(lst)
-    
-    volunteers = sorted(volunteers, key = lambda x : int(x[4]), reverse = True )
-    
-    for requirement in query:
-        requirement = requirement.replace(" and", "")
-        lang, job, career, food, score = requirement.split(" ")
-        n = 0
-        for volunteer in volunteers:
-            if score != '-' and int(score) > int(volunteer[4]):
-                break
-            
-            if lang != '-' and lang != volunteer[0]:
-                continue
-                
-            if job != '-' and job != volunteer[1]:
-                continue
-                
-            if career != '-' and career != volunteer[2]:
-                continue
-                
-            if food != '-' and food != volunteer[3]:
-                continue
-                
-            n += 1
-            
-        answer.append(n)
+        lst = i.split()
+        score = int(lst[-1])
+        for j in range(5):
+            for c in itertools.combinations(lst[:-1], j):
+                key = "".join(c)
+                if key in applicants:
+                    applicants[key].append(score)
+                else:
+                    applicants[key] = [score]
+
+    ## 이분탐색을 사용하기 위해 sort사용      
+    for key in applicants.keys():
+        applicants[key].sort()
+        
+    for q in query:
+        ## '-'는 해당 조건을 고려하지 않기에 삭제
+        ## '-' 때문에 조합을 사용해서 지원자 스팩의 모든 경우의 수를 저장한 것
+        lst = q.replace("and", "").replace("-", "").split()
+        key = "".join(lst[:-1])
+        score = int(lst[-1])
+
+        ## 요구하는 스팩이 없을 경우 answer에 0을 넣는 코드
+        if key in applicants:
+            temp = applicants[key]
+        else:
+            answer.append(0)
+            continue
+        left = 0
+        right = len(temp)
+
+        while left < right:
+            mid = (left + right) // 2
+            if temp[mid] >= score:
+                right = mid
+            else:
+                ## 0부터 수를 새기에 +1을 해주는 것
+                left = mid + 1
+
+        answer.append(len(temp) - left)
         
     return answer
