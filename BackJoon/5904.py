@@ -1,12 +1,16 @@
-n = int(input())
-answer = "moo"
-num = 1
+N = int(input())
+mo = "moo"
+length = 2
+n = 1
 
-while True:
-  new = "moo" + ("o" * num) + "moo"
-  answer += new
-  num += 1
-  if len(answer) > n:
-    break
+def game(mo, length, n):  
+  if length >= N:
+    print(mo[N-1])
+    return
 
-print(answer[n-1])
+  mo = mo + "m" + ("o" * (n+2)) + mo
+  length = length * 2 + n + 4
+  n += 1
+  game(mo, length, n)
+
+game(mo, length, n)
