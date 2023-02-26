@@ -1,16 +1,27 @@
 N = int(input())
-mo = "moo"
-length = 2
-n = 1
+lst = [3, 4]
+total = 0
+num = 5
+flag = False
 
-def game(mo, length, n):  
-  if length >= N:
-    print(mo[N-1])
-    return
+if N == 0:
+  print('m')
+else:
+  while True:
+    for i in lst:
+      total += i
+      if total == N - 1:
+        print('m')
+        flag = True
+        break
+      elif total > N - 1:
+        print('o')
+        flag = True
+        break
 
-  mo = mo + "m" + ("o" * (n+2)) + mo
-  length = length * 2 + n + 4
-  n += 1
-  game(mo, length, n)
-
-game(mo, length, n)
+    if flag:
+      break
+    
+    lst.insert(0, num)
+    lst.insert(0, 3)
+    num += 1
