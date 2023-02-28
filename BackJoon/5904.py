@@ -1,27 +1,19 @@
 N = int(input())
-lst = [3, 4]
-total = 0
-num = 5
-flag = False
 
-if N == 0:
-  print('m')
-else:
-  while True:
-    for i in lst:
-      total += i
-      if total == N - 1:
-        print('m')
-        flag = True
-        break
-      elif total > N - 1:
-        print('o')
-        flag = True
-        break
+length = 3
+n = 0
 
-    if flag:
-      break
-    
-    lst.insert(0, num)
-    lst.insert(0, 3)
-    num += 1
+def moo(length, middle, N):
+  pre = (length - middle) // 2
+  if pre >= N:
+    return moo(pre, middle - 1, N)
+  elif pre + middle < N:
+    return moo(pre, middle - 1, N - pre - middle)
+  else:
+    return "o" if N-pre-1 else "m"
+
+while N > length:
+  n += 1
+  length = length * 2 + 3 + n
+
+print(moo(length, n + 3, N))
