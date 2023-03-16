@@ -1,44 +1,34 @@
-from itertools import permutations
-import copy
+## 모든 경우의 수를 구해서 비교해서 구하면 시간초과걸림
+## 자리수를 사용해서 답을 구할 수 있음
+## 예시, 입력: ABC, BCA
+## ABC -> A * 100 + B * 10 + C * 1
+## BCA -> B * 100 + C * 10 + A * 1
+## ABC + BCA -> A * 101 + B * 110 + C * 11
+## B = 9, A = 8, C = 7 대입하는 것이 가장 큰 수
 
 n = int(input())
-words = []
 
+words = []
 for i in range(n):
   words.append(input())
 
-## 입력된 알파벳 갯수를 구할 때 사용할 리스트
-alphabet = set()
-for word in words:
-  for i in word:
-    alphabet.add(i)
+cnt = {}
 
-alphabet = list(alphabet)
-## 단어를 숫자로 바꿀 때 사용할 숫자들을 저장하는 리스트
-## ex) 입력 : 'AAA', 'BBB' -> ["9", "8"]
-numbers = []
-## {A:9, B:8} 이런씩으로 저장할 딕셔너리
-dic = {}
+for i in range(n):
+  for j in range(len(words[i])):
+    ## 만약 cnt['알파벳']이 있다면 (10 ** j) 더하기
+    ## cnt['알파벳']이 없다면 (10 ** j)로 초기화 하기
+    try:
+      cnt[words[i][(-1 * (j + 1))]] += (10 ** j)
+    except:
+      cnt[words[i][(-1 * (j + 1))]] = (10 ** j)
 
-for i in range(len(alphabet)):
-  dic[alphabet[i]] = 0
-  numbers.append(str(9-i))
+## value가 높은 순으로 정렬하기
+replace_str = sorted(cnt, key=lambda x:cnt[x], reverse=True)
 
-answer = 0
+## 입력받은 단어 숫자로 변경하기
+for i in range(n):
+  for j in range(len(replace_str)):
+    words[i] = words[i].replace(replace_str[j], str(9-j))
 
-## 모든 경우의 수를 구하기
-for comb in permutations(numbers, len(numbers)):
-  ## 딕셔너리에 값 초기화
-  for i in range(len(dic)):
-    dic[alphabet[i]] = comb[i]
-
-  change_words = copy.deepcopy(words)
-  ## 입력받은 문자열 숫자로 변경
-  for i in range(len(change_words)):
-    for key, value in dic.items():
-      change_words[i] = change_words[i].replace(key, value)
-
-  ## 변경된 문자열의 합을 answer보다 크면 answer에 저장
-  answer = max(answer, sum(map(int, change_words)))
-
-print(answer)
+print(sum(map(int, words)))
