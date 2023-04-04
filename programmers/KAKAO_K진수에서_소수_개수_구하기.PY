@@ -31,7 +31,8 @@ def make_prime(n, k):
         rest = n % k
         n = n // k
         prime += str(rest)
-    prime += str(n)
+    if n != 0:
+        prime += str(n)
     
     return prime[::-1]
 
