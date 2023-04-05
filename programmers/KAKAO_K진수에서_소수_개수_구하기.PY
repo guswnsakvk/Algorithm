@@ -1,51 +1,40 @@
-import re
+## 1. 입력받은 n을 k진수로 변환하기
+## 2. k진수로 바꾼 값을 0기준으로 나누기
+## 3. 0으로 나눈 리스트의 값을 소수인지 확인
+## split('0')으로 나누면 공백이 있는 상태가 나오므로
+## if문에 len을 활용해서 공백 거르기
+
 import math
 
 def solution(n, k):
     answer = 0
     
-    ## n을 k진수로 만들기
-    n_prime = make_prime(n, k)
+    str_num = change(n, k)
     
-    ## 0을 기준으로 나누기
-    num_lst = re.split('0+', n_prime)
-    
-    ## num_lst의 최대값 구하기
-    ## 에스토스테네스의 체에 활용됨
-    max_num = max(num_lst)
-    
-    ## 에스토스테네스의 체로 소수 리스트 반환
-    prime_lst = is_prime_number(int(max_num))
-    
-    ## num_lst에 있는 숫자가 소수인지 판별
+    num_lst = str_num.split('0')
+
     for i in num_lst:
-        if prime_lst[int(i)]:
+        if len(i) and check(int(i)):
             answer += 1
     
     return answer
 
-## n을 k진수로 변환하기
-def make_prime(n, k):
-    prime = ''
-    while n >= k:
-        rest = n % k
-        n = n // k
-        prime += str(rest)
-    if n != 0:
-        prime += str(n)
-    
-    return prime[::-1]
+def change(num, base):
+    n = ''
+    while num > 0:
+        num, rest = divmod(num, base)
+        n += str(rest)
+        
+    return n[::-1]
 
-## 에스토스테네스의 체를 활용해서 소수 확인
-def is_prime_number(x):
-    array = [True for i in range(x+1)]
-    array[1] = False
+def check(num):
+    if num == 2:
+        return True
+    if num == 1 or num % 2 == 0:
+        return False
     
-    for i in range(2, int(math.sqrt(x))+1):
-        if array[i] == True:
-            j = 2
-            while i * j < x:
-                array[i*j] = False
-                j += 1
+    for i in range(3, int(math.sqrt(num))+1):
+        if num % i == 0:
+            return False
     
-    return array
+    return True
