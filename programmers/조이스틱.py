@@ -21,7 +21,8 @@ def solution(name):
             ## mid 보다 왼쪽이면 left에 오른쪽이면 right에 위치 저장
             if i > mid:
                 right.append(i)
-            else:
+            ## i는 무조건 처음에 변경하면 되기에 위치 기록안해도 됨
+            elif i != 0:
                 left.append(i)
 
 
