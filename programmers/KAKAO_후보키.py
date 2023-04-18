@@ -19,20 +19,34 @@ def solution(relation):
         if len(value) == check_len:
             minimum.append(key)
 
-    tmp = minimum[0]
+    # print(minimum)
     answer = 0
-    
-    for i in range(len(minimum)-1):
-        for j in range(i+1, len(minimum)):
-            if minimum[i] == '':
-                continue
-            
-            if minimum[i] in minimum[j]:
-                print(minimum[i],  minimum[j])
-                minimum[j] = ''
+    stack = []
     
     for i in minimum:
-        if i != '':
+        flag = False
+        tmp = []
+        for j in i:
+            if j in stack:
+                flag = True
+                break
+            else:
+                tmp.append(j)
+    
+        if not flag:
+            stack.extend(tmp)
             answer += 1
+    
+#     for i in range(len(minimum)-1):
+#         for j in range(i+1, len(minimum)):
+#             if minimum[i] == '':
+#                 continue
+            
+#             if minimum[i] in minimum[j]:
+#                 minimum[j] = ''
+    
+#     for i in minimum:
+#         if i != '':
+#             answer += 1
     
     return answer
