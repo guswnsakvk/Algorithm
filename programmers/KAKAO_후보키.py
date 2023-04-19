@@ -23,30 +23,32 @@ def solution(relation):
     answer = 0
     stack = []
     
-    for i in minimum:
-        flag = False
-        tmp = []
-        for j in i:
-            if j in stack:
-                flag = True
-                break
-            else:
-                tmp.append(j)
-    
-        if not flag:
-            stack.extend(tmp)
-            answer += 1
-    
-#     for i in range(len(minimum)-1):
-#         for j in range(i+1, len(minimum)):
-#             if minimum[i] == '':
-#                 continue
-            
-#             if minimum[i] in minimum[j]:
-#                 minimum[j] = ''
-    
 #     for i in minimum:
-#         if i != '':
+#         flag = False
+#         tmp = []
+#         for j in i:
+#             if j in stack:
+#                 flag = True
+#                 break
+#             else:
+#                 tmp.append(j)
+    
+#         if not flag:
+#             stack.extend(tmp)
 #             answer += 1
+    
+    for i in range(len(minimum)-1):
+        for j in range(i+1, len(minimum)):
+            if minimum[i] == '':
+                continue
+            
+            for k in minimum[i]:
+                if minimum[i] in minimum[j]:
+                    minimum[j] = ''
+            
+    
+    for i in minimum:
+        if i != '':
+            answer += 1
     
     return answer
