@@ -8,8 +8,7 @@ def solution(picks, minerals):
         for j in range(picks[i]):
             pickaxs.append(i)
     
-    per_num = len(minerals) // 5 if len(minerals) % 5 == 0 else len(minerals) // 5 + 1
-    per_num = min(per_num, len(pickaxs))
+    per_num = min(len(minerals) // 5 if len(minerals) % 5 == 0 else len(minerals) // 5 + 1, len(pickaxs))
     
     pickax = permutations(pickaxs, per_num)
     
