@@ -1,9 +1,7 @@
 from collections import deque
-import copy
 
 def solution(n, s, a, b, fares):
-    # global fees
-    answer = 0
+    answer = 1e9
     graph = [[] for _ in range(n+1)]
     fees = {}
     
@@ -13,64 +11,42 @@ def solution(n, s, a, b, fares):
         graph[end].append(start)
         fees[str(start) + str(end)] = fee
         fees[str(end) + str(start)] = fee
+    
+    for i in range(1, n+1):
+        share = dfs(n, s, i, graph, fees)
+        # print(share)
         
-    print(graph)
-    print(fees)   
-    
-    s_to_a = dfs(s, a, graph, fees, n)
-    s_to_b = dfs(s, b, graph, fees, n)
-    a_to_b = dfs(a, b, graph, fees, n)
-    
-    print(s_to_a)
-    print(s_to_b)
-    print(a_to_b)
+        if share[0] != 1e9:
+            for j in share[1]:
+                share_to_a = dfs(n, j, a, graph, fees)
+                share_to_b = dfs(n, j, b, graph, fees)
+                answer = min(answer, share[0] + share_to_a[0] + share_to_b[0])
+            # print(share_to_a, share_to_b)
+            # print('---')
     
     return answer
 
-def dfs(start, end, graph, fees, n):
-    # global fees
-    queue = deque()
-    # queue.append((start, 0))
+def dfs(n, s, e, graph, fees):
+    path = 1e9
+    tmp = []
     
     visited = [False for _ in range(n+1)]
-    visited[start] = True
+    visited[s] = True
     
-    for i in graph[start]:
-        # print(i)
-        queue.append((i, fees[str(start) + str(i)], [str(start) + str(i), str(i) + str(start)]))
-        if not visited[i] and i != end:
-            visited[i] = True
-    min_path = 1e9
-    # print(visited)
-    # print(queue)
+    queue = deque()
+    queue.append((s, 0))
     
     while queue:
-        x, num, tmp = queue.popleft()
+        x, num = queue.popleft()
         
-        if x == end and min_path > num:
-            min_path = num
-            for i in tmp:
-                fees[i] = 0
+        if x == e and path > num:
+            path = num
+            tmp.append(x)
             continue
         
         for g in graph[x]:
-            # print(g)
-            loard = copy.deepcopy(tmp)
-            # print(g)
-            # if g == end:
-            #     num += fees[str(x) + str(g)]
-            #     print(fees[str(x) + str(g)])
-            #     print(num)
-                
-            
             if not visited[g]:
-                loard.append(str(x) + str(g))
-                loard.append(str(g) + str(x))
-                # print(fees[str(x) + str(g)])
-                # print(num)
-                if g != end:
-                    visited[g] = True
-                queue.append((g, num + fees[str(x) + str(g)], loard))
-                # print(queue)
-            # print('---')
-    return min_path
+                visited[g] = True
+                queue.append((g, num + fees[str(x) + str(g)]))
+    
+    return path, tmp
