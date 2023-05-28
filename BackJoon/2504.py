@@ -19,11 +19,14 @@ for index, i in enumerate(s):
         else:
             if i == ')' and stack[-1] == '(':
                 if len(stack) == 1:
-                    num += tmp
-                    num *= 2
-                    answer += num
-                    num = 0
-                    tmp = 0
+                    if tmp == 0:
+                        answer += 2
+                    else:
+                        num += tmp
+                        num *= 2
+                        answer += num
+                        num = 0
+                        tmp = 0
                     print(index)
                     print('num : ' + str(num))
                     print('tmp : ' + str(tmp))
@@ -40,11 +43,13 @@ for index, i in enumerate(s):
                 stack.pop()
             elif i == ']' and stack[-1] == '[':
                 if len(stack) == 1:
-                    num += tmp
-                    num *= 3
-                    answer += num
-                    num = 0
-                    tmp = 0
+                    if tmp == 0:
+                        answer += 3
+                        num += tmp
+                        num *= 3
+                        answer += num
+                        num = 0
+                        tmp = 0
                     print(index)
                     print('num : ' + str(num))
                     print('tmp : ' + str(tmp))
@@ -68,5 +73,8 @@ for index, i in enumerate(s):
             break
         else:
             stack.append(i)
-        
-print(answer)
+
+if stack:
+    print(0)
+else:
+    print(answer)
