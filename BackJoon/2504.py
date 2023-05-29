@@ -1,103 +1,63 @@
-## ([()(())](())([[]]()))()[()]
-## 96
+"""
+1. '('이면 tmp에 2곱하기, '['이면 tmp에 3곱하기
 
-## (()[[]])([])
-## 28
+2. ')'이면 
+1) stack이 비지않고 stack[-1]이 '['이면
+   올바른 괄호열이 아니기에 answer = 0
+2) 만약 s[i-1]이 '('이면 answer에 tmp 더하기
+3) stack.pop()
+4) tmp 나누기 2
 
-## ((((((()))))))
-## 128
+3. ']'이면 
+1) stack이 비지않고 stack[-1]이 '('이면
+   올바른 괄호열이 아니기에 answer = 0
+2) 만약 s[i-1]이 '('이면 answer에 tmp 더하기
+3) stack.pop()
+4) tmp 나누기 3
 
-s = input()
+4. 만약 스택이 
+1) 있으면 0출력
+2) 없으면 answer 출력
+
+※ 곱하기 법칙을 생각하면 접근하기 쉬움
+(()[])
+-> 2랑 3을 더하고 2를 곱한다
+-> 2에 2곱한 것과 3에 2곱한 것을 더한다
+"""
+
+s = list(input())
 
 stack = []
+tmp =1
 answer = 0
-num = 0
-tmp = 0
-check = False
 
-for index, i in enumerate(s):
-    if stack:
-        if i == '(' or i == '[':
-            stack.append(i)
-            if num != 0:
-                tmp += num
-                num = 0
-                print(index)
-                print(stack)
-                print('num : ' + str(num))
-                print('tmp : ' + str(tmp))
-                print('---')
-        else:
-            if i == ')' and stack[-1] == '(':
-                if len(stack) == 1:
-                    if tmp == 0 and num == 0:
-                        answer += 2
-                    else:
-                        num += tmp
-                        num = num * 2
-                        answer += num
-                        num = 0
-                        tmp = 0
-                    print(index)
-                    print(stack)
-                    print('num : ' + str(num))
-                    print('tmp : ' + str(tmp))
-                    print('answer : ' + str(answer))
-                    print('---')
-                else:
-                  if num != 0:
-                      num *= 2
-                  else:
-                      num = 2
-                  print(index)
-                  print(stack)
-                  print('num : ' + str(num))
-                  print('tmp : ' + str(tmp))
-                  print('answer : ' + str(answer))
-                  print('---')
-                stack.pop()
-            elif i == ']' and stack[-1] == '[':
-                if len(stack) == 1:
-                    if tmp == 0 and num == 0:
-                        answer += 3
-                    else:
-                        num += tmp
-                        num = num * 3
-                        answer += num
-                        num = 0
-                        tmp = 0
-                    print(index)
-                    print(stack)
-                    print('num : ' + str(num))
-                    print('tmp : ' + str(tmp))
-                    print('answer : ' + str(answer))
-                    print('---')
-                else:
-                  if num != 0:
-                      num *= 3
-                  else:
-                      num = 3
-                  print(index)
-                  print(stack)
-                  print('num : ' + str(num))
-                  print('tmp : ' + str(tmp))
-                  print('answer : ' + str(answer))
-                  print('---')
-                stack.pop()
-            else:
-                check = True
-                break
-    else:
-        if i == ')' or i == ']' or i == '{' or i == '}':
-            check = True
-            break
-        else:
-            stack.append(i)
-            print(index)
-            print(stack)
-            print('---')
+for i in range(len(s)):
+  if s[i] == '(':
+    stack.append(s[i])
+    tmp *= 2
+  elif s[i] == '[':
+    stack.append(s[i])
+    tmp *= 3
+  elif s[i] == ')':
+    if not stack or stack[-1] == '[':
+      answer = 0
+      break
+    if s[i-1] == '(':
+      answer += tmp
 
-if stack or check:
-    print(0)
+    stack.pop()
+    tmp //= 2
+  else:
+    if not stack or stack[-1] == '(':
+      answer = 0
+      break
+    if s[i-1] == '[':
+      answer += tmp
+
+    stack.pop()
+    tmp //= 3
+
+if stack:
+  print(0)
 else:
-    print(answer)
+  print(answer)
