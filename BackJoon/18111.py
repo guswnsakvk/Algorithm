@@ -26,7 +26,7 @@ ground = []
 for i in range(n):
   ground.append(list(map(int, input_fun().split())))
 
-for target in range(257):
+for target in range(256, -1, -1):
   del_block = 0
   install_block = 0
   time = 0
@@ -45,7 +45,5 @@ for target in range(257):
     if answer_time > num:
       answer_time = num
       answer_target = target
-    elif answer_time == num:
-      answer_target = target
 
-print('{0} {1}'.format(answer_time, answer_target))
+print(answer_time, answer_target)
