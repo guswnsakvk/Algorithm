@@ -1,44 +1,33 @@
-import copy
+"""
+1. 인접한 요소의 위치를 바꾼다
+2. 바꾼 배열을 통해 행, 열에서 가장 많이 사탕을 먹을 수 있는 지 확인한다.
+3. 바꾼 요소를 다시 원위치 한다.
+4. 모든 경우의 수까지 이 작업을 반복한다.
+"""
+
 import sys
 
-def getAnswer(tmp, n, answer):
+def getAnswer(arr, n, answer):
     for i in range(n):
-        num_col = 1
-        candy_col = tmp[i][0]
-        #print(candy)
+      num = 1
+      for j in range(1, n):
+        if arr[i][j] == arr[i][j-1]:
+          num += 1
+        else:
+          num =1
 
-        num_row = 1
-        candy_row = tmp[0][i]
-        for j in range(1, n):
-            if candy_col == tmp[i][j]:
-                num_col += 1
-                if num_col == n:
-                    return num_col
-                #print(num)
-            else:
-                candy_col == tmp[i][j]
-                if num_col > answer:
-                    #print(num)
-                    answer = num_col
-                num_col = 1
+        if num > answer:
+          answer = num
 
-            if candy_row == tmp[j][i]:
-                num_row += 1
-                if num_row == n:
-                    #print(num)
-                    return num_row
-            else:
-                candy_row = tmp[j][i]
-                if num_row > answer:
-                  #print(num)
-                  answer = num_row
-                num_row = 1
-            
-            if j == n-1:
-                if num_col > answer:
-                    answer = num_col
-                if num_row > answer:
-                    answer = num_row
+      num= 1
+      for j in range(1, n):
+        if arr[j][i] == arr[j-1][i]:
+          num += 1
+        else:
+          num = 1
+
+        if num > answer:
+          answer = num
                 
     return answer
 
@@ -46,7 +35,7 @@ input = sys.stdin.readline
 n = int(input())
 
 bomboni = []
-answer = 1
+answer = 0
 
 for i in range(n):
     bomboni.append(list(input()))
@@ -56,21 +45,23 @@ for i in range(n):
         a = bomboni[i][j]
         b = bomboni[i][j+1]
 
+        bomboni[i][j] = b
+        bomboni[i][j+1] = a
+
+        answer = getAnswer(bomboni, n, answer)
+
+        bomboni[i][j] = a
+        bomboni[i][j+1] = b
+
         c = bomboni[j][i]
         d = bomboni[j+1][i]
 
-        tmp = copy.deepcopy(bomboni)
+        bomboni[j][i] = d
+        bomboni[j+1][i] = c
 
-        tmp[i][j] = b
-        tmp[i][j+1] = a
+        answer = getAnswer(bomboni, n, answer)
 
-        answer = getAnswer(tmp, n, answer)
-
-        tmp = copy.deepcopy(bomboni)
-
-        tmp[j][i] = d
-        tmp[j+1][i] = c
-
-        answer = getAnswer(tmp, n, answer)
+        bomboni[j][i] = c
+        bomboni[j+1][i] = d
 
 print(answer)
