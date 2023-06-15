@@ -1,11 +1,10 @@
-from itertools import permutations
+from itertools import combinations
 import sys
 
 input = sys.stdin.readline
 n, m = map(int, input().split())
 
 answer = 1e9
-graph = []
 house = []
 chicken = []
 
@@ -18,18 +17,15 @@ for i in range(n):
     if lst[j] == 2:
       chicken.append((i, j))
 
-live_chicken = permutations(chicken, m)
+for live_chicken in combinations(chicken, m):
+  memo = [100] * len(house)
 
-for live in live_chicken:
-  tmp = {}
+  for i, h in enumerate(house):
+    for live in live_chicken:
+      if memo[i] > abs(h[0] - live[0]) + abs(h[1] - live[1]):
+        memo[i] = abs(h[0] - live[0]) + abs(h[1] - live[1])
 
-  for h in house:
-    tmp[str(h[0])+str(h[1])] = 1e9
+  if answer > sum(memo):
+    answer = sum(memo)
   
-  for l in live:
-    for h in house:
-      tmp[str(h[0])+str(h[1])] = min(tmp[str(h[0])+str(h[1])], abs(l[0] - h[0]) + abs(l[1] - h[1]))
-
-  answer = min(answer, sum(tmp.values()))
-
 print(answer)
