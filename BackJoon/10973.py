@@ -1,18 +1,13 @@
-from itertools import permutations
-
 n = int(input())
+lst = list(map(int, input().split()))
 
-#now = tuple(input().split())
-#prev = tuple(map(str, range(1,n+1)))
+for i in range(n-1, 0, -1):
+  if lst[i-1] > lst[i]:
+    for j in range(n-1,0,-1):
+      if lst[i-1] > lst[j]:
+        lst[i-1], lst[j] = lst[j], lst[i-1]
+        lst = lst[:i] + sorted(lst[i:], reverse=True)
+        print(*lst)
+        exit()
 
-#if now == prev:
-#    print(-1)
-#else:
-#    for p in permutations(map(str, range(1, n+1)), n):
-#        if now == p:
-#            print(" ".join(prev))
-#            break
-#        prev = p
-
-for p in permutations(map(str, range(1, n+1)), n):
-    print(p)
+print(-1)
