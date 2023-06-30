@@ -1,21 +1,15 @@
-from itertools import permutations
+"""
+30의 배수는 각 자리 숫자들의 합이 3의 배수여야 한다.
+-> 30의 배수는 각 자리 숫자들의 합이 3의 배수여야 하는 이유는 10과 3이 서로소이기 때문 
+"""
 
 n = list(input())
 n.sort(reverse=True)
 
-len_n = len(n)
-lst = permutations(n, len_n)
-
-answer = 0
-
-for l in lst:
-    num = int("".join(l))
-    
-    if num % 30 == 0:
-        answer = num
-        break
-
-if answer:
-    print(answer)
-else:
+if n[-1] != '0':
     print(-1)
+else:
+    if sum(map(int, n)) % 3 == 0:
+        print(int("".join(n)))
+    else:
+        print(-1)
