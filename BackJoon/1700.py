@@ -3,41 +3,47 @@ import sys
 input = sys.stdin.readline
 
 n, k = map(int, input().split())
-lst = deque(map(int, input().split()))
+queue = deque(map(int, input().split()))
 
 answer = 0
 socket = []
 
-while lst:
-    num = lst.popleft()
+while queue:
+    num = queue.popleft()
 
-    if len(socket) != n:
-        if num not in socket:
-          socket.append(num)
-    else:
-        if num in socket:
-            continue
-        
-        remove_num = socket[0]
-        place = "".join(map(str, lst)).find(str(remove_num))
-        print(place)
-
-        if place != -1:
-          for i in range(1, n):              
-              tmp_place = "".join(map(str, lst)).find(str(socket[i]))
-              if tmp_place == -1:
-                  remove_num = socket[i]
-                  break
-
-              if tmp_place > place:
-                  place = tmp_place
-                  remove_num = socket[i]
-
-        print(remove_num)
-        socket.remove(int(remove_num))
+    # 코드에 이미 꽂혀져있음
+    if num in socket:
+        continue
+    
+    # 코드 자리 남음
+    if len(socket) < n:
         socket.append(num)
-        print(socket)
-        print('---')
-        answer += 1
+        continue
+    
+    tmp = []
+    check = False
+
+    # 현재 코드에 연결된 전기 용품 중 앞으로 가장 늦게 사용되는 전기용품 찾기
+    for i in range(n):
+        pluged = socket[i]
+
+        if pluged in queue:
+            index = queue.index(pluged)
+        else:
+            index = 101
+            check = True
+        
+        tmp.append(index)
+
+        if check:
+            break
+    
+    # 찾은 전기용품 코드에서 뽑기
+    plug_out = tmp.index(max(tmp))
+    del socket[plug_out]
+
+    # 새로운 전기 용품 연결
+    socket.append(num)
+    answer += 1
 
 print(answer)
