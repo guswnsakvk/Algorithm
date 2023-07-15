@@ -1,23 +1,28 @@
+import sys
+input = sys.stdin.readline
+
+def find(x):
+  if x == parents[x]:
+    return x
+  parents[x] = find(parents[x])
+  return parents[x]
+
 n = int(input())
 k = int(input())
 answer = 0
+parents = {i:i for i in range(n+1)}
 
-gate = [False] * n
 airplane_lst = []
 for _ in range(k):
   airplane_lst.append(int(input()))
 
 for airplane in airplane_lst:
-  check = False
-  
-  for i in range(airplane-1, -1, -1):
-    if not gate[i]:
-      answer += 1
-      gate[i] = True
-      check = True
-      break
+  x = find(airplane)
 
-  if not check:
+  if x == 0:
     break
+
+  parents[x] = parents[x-1]
+  answer += 1
 
 print(answer)
