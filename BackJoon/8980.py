@@ -1,3 +1,8 @@
+"""
+1. 각 마을에서 실을 수 있는 트럭용량을 배열로 저장
+2. 빠른 도착지부터 출발지-도착지 사이의 택배용량을 줄여나가는 방법
+"""
+
 import sys
 input = sys.stdin.readline
 
@@ -5,31 +10,25 @@ N, C = map(int, input().split())
 M = int(input())
 
 answer = 0
-track = [0] * N
-dates = []
+track = [C] * (N+1)
+date = []
 
 for _ in range(M):
   send, take, box = map(int, input().split())
-  dates.append((send, take, box))
+  date.append((send, take, box))
 
-dates.sort(key=lambda x:(-x[1], -x[0]))
+date.sort(key=lambda x:(x[1], x[0]))
 
-for data in dates:
-  send, take, box = data
+for send, take, box in date:
+  min_weight = C
+  
+  for i in range(send, take):
+    min_weight = min(min_weight, track[i])
+  min_weight = min(min_weight, box)
 
-  now_weight = sum(track[:take-1])
+  for i in range(send, take):
+    track[i] -= min_weight
 
-  if now_weight < C:
-    now_weight += box
-    if now_weight <= C:
-      answer += box
-      track[send-1] += box
-      track[take-1] -= box
-    else:
-      num = box - (now_weight - C)
-      now_weight -= num
-      answer += num
-      track[send-1] += num
-      track[take-1] -= num
+  answer += min_weight
 
 print(answer)
