@@ -1,6 +1,6 @@
 A, P = map(int, input().split())
 
-answer = [A]
+lst = [A]
 idx = 0
 
 while True:
@@ -10,12 +10,11 @@ while True:
         A, b = divmod(A, 10)
         num += b ** P
 
-    if num not in answer:
-        answer.append(num)
+    if num not in lst:
+        lst.append(num)
         A = num
     else:
-        idx = answer.index(num)
+        idx = lst.index(num)
         break
 
 print(idx)
-print(answer)
