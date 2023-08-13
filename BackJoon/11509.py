@@ -3,17 +3,12 @@ input = sys.stdin.readline
 
 n = int(input())
 balloon = list(map(int, input().split()))
-stack = []
+lst = [0] * 1000001
 
 for b in balloon:
-  if not stack:
-    stack.append(b-1)
-    continue
-  else:
-    if b in stack:
-      idx = stack.index(b)
-      stack[idx] -= 1
-    else:
-      stack.append(b-1)
+    if lst[b]:
+        lst[b] -= 1
 
-print(len(stack))
+    lst[b-1] += 1 
+
+print(sum(lst))
