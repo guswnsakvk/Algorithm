@@ -1,7 +1,6 @@
 from collections import deque
 import copy
 import sys
-
 input = sys.stdin.readline
 
 def solve(graph, air_place):
@@ -62,7 +61,7 @@ def wind_up(tmp, air_place):
   for i in range(T-2, -1, -1):
     tmp[0][i], num = num, tmp[0][i]
 
-  for i in range(1, air_place-1):
+  for i in range(1, air_place):
     tmp[i][0], num = num, tmp[i][0]
 
   tmp[air_place][1] = 0
@@ -77,7 +76,7 @@ def wind_down(tmp, air_place):
     tmp[i][T-1], num = num, tmp[i][T-1]
 
   for i in range(T-2, -1, -1):
-    tmp[0][i], num = num, tmp[0][i]
+    tmp[R-1][i], num = num, tmp[R-1][i]
 
   for i in range(R-2, air_place, -1):
     tmp[i][0], num = num, tmp[i][0]
