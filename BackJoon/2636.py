@@ -31,10 +31,7 @@ def bfs(cheese, cnt):
   for x, y in remove_cheese:
     cheese[x][y] = 0
 
-  if len(remove_cheese):
-    return cnt - len(remove_cheese)
-  else:
-    return 0
+  return cnt - len(remove_cheese)
 
 N, M = map(int, input().split())
 cheese = [list(map(int, input().split())) for _ in range(N)]
