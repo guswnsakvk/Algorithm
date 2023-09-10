@@ -7,13 +7,15 @@ lst = []
 for _ in range(n):
   lst.append(int(input()))
 
-dp = [0] * (n)
+if n < 3:
+  print(sum(lst))
+else:
+  dp = []
+  dp.append(lst[0])
+  dp.append(max(lst[0] + lst[1], lst[1]))
+  dp.append(max(lst[0] + lst[2], lst[1] + lst[2]))
 
-for i in range(n-1, -1, -1):
-  if i % 2:
-    dp[i-1] = max(dp[i-1], dp[i] + lst[i])
-    dp[i-2] = max(dp[i-2], dp[i] + lst[i])
-  else:
-    dp[i-2] += max(dp[i-1], dp[i] + lst[i])
+  for i in range(3, n):
+    dp.append(max(dp[i-2] + lst[i], dp[i-3] + lst[i-1] + lst[i]))
 
-print(max(dp[0] + 10, dp[1]))
+  print(dp[-1])
