@@ -1,27 +1,20 @@
 import sys
 input = sys.stdin.readline
 
-N = int(input())
+n = int(input())
+points = [tuple(map(int,input().split())) for _ in range(n)]
 
-answer = 1
-tmp = 1
+arr = []
+for x, y in points:
+    arr.append((x, 1))
+    arr.append((y, -1))
 
-lines = []
-for _ in range(N):
-    lines.append(list(map(int, input().split())))
+arr.sort(key=lambda x: (x[0], x[1]))
 
-lines.sort(key=lambda x : -x[1])
-start = lines[0][0]
-end = lines[0][1]
+cnt = 0
+ans = 0
+for x, v in arr:
+    cnt += v
+    ans = max(ans, cnt)
 
-for i in range(1, N):
-    if start < lines[i][1]:
-        tmp += 1
-        start = max(start, lines[i][0])
-    else:
-        answer = max(answer, tmp)
-        tmp = 1
-        start = lines[i][0]
-        end = lines[i][1]
-
-print(max(answer, tmp))
+print(ans)
