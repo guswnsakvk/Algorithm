@@ -15,45 +15,54 @@ for _ in range(N):
     else:
         right.append([place, people])
 
-left.sort(reverse=True)
-right.sort()
+left.append([S, 0])
+right.append([S, 0])
 
-now = S
+left.sort()
+right.sort(reverse=True)
 
-for idx, val in enumerate(left):
-    answer += now - val[0]
-    now = val[0]
+print(left)
+print(right)
 
-    cnt += val[1]
+for i in range(len(left)):
+    cnt += left[i][1]
 
-    while cnt >= K:       
-        if cnt == K and idx + 1 == len(left):
-            break
+    if cnt >= K:
+        num, rest = divmod(cnt, K)
 
-        if idx + 1 != len(left):
-            answer += (S - val[0]) * 2
-            cnt -= K
+        answer += (S  - left[i][0]) * num * 2
+        cnt = rest
+        if rest:
+            answer += left[i+1][0] - left[i][0]
+        else:
+            answer -= left[i+1][0] - left[i][0]
+    else:
+        if i+1 != len(left):
+            answer += left[i+1][0] - left[i][0]
 
-if cnt:
-    answer += S - left[-1][0]
 cnt = 0
-now = S
 
-for idx, val in enumerate(right):
-    answer += val[0] - now
-    now = val[0]
+for i in range(len(right)):
+    cnt += right[i][1]
 
-    cnt += val[1]
+    if cnt >= K:
+        num, rest = divmod(cnt, K)
 
-    while cnt >= K:
-        if cnt == K and idx + 1 == len(right):
-            break
+        answer += (right[i][0] - S) * num * 2
+        cnt = rest
 
-        if idx + 1 != len(right):
-            answer += (val[0] - S) * 2
-            cnt -= K
+        if rest:
+            answer += right[i][0] - right[i+1][0]
+        else:
+            answer -= right[i][0] - right[i+1][0]
+    else:
+        if i+1 != len(right):
+            answer += right[i][0] - right[i+1][0]
 
-if cnt:
-    answer += right[-1][0] - S
+if left:
+    answer += left[0][0]
+
+if right:
+    answer += right[0][0]
 
 print(answer)
